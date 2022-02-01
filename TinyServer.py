@@ -1,3 +1,4 @@
+from HTTPResponse import *
 import socket
 
 class TinyServer:
@@ -11,8 +12,10 @@ class TinyServer:
             self.bindHost(host, port)
             while True:
                 (clientsock, address) = self.s.accept()
+                response = HTTPResponse({'message': 'bonjour'})
                 clientsock.recv(2048)
-                clientsock.send(b'HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nDate: Tue, 01 Feb 2022 10:59:16 GMT\r\nConnection: keep-alive\r\nKeep-Alive: timeout=5\r\nTransfer-Encoding: chunked\r\n\r\n14\r\n<h1>hello world</h1>\r\n0\r\n\r\n')
+                print(response.end())
+                clientsock.send(response.end())
             self.s.shutdown(1)
             self.s.close()
         except KeyboardInterrupt:

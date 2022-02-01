@@ -22,10 +22,9 @@ class HTTPRequest:
             pass
         return self.fail
     def httpResponse(self):
-        response = self.socket.recv(255)
+        response = self.socket.recv(2048)
         self.socket.close()
         return response
 
 request = HTTPRequest("localhost", 3000)
-
 print(request.get("login"))
