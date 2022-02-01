@@ -5,13 +5,22 @@ class HTTPRequest:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.host = host
         self.port = port
+        self.fail = False
     def connect(self, host, port):
-        self.socket.connect((host, port))
+        try:
+            self.socket.connect((host, port))
+        except ConnectionRefusedError:
+            self.fail = "Connection refused !"
     def get(self, route=""):
-        request = "GET /{} HTTP/1.1\r\nHost:localhost\r\n\r\n".format(route)
-        self.connect(self.host, self.port)
-        self.socket.send(request.encode())
-        return self.httpResponse()
+        try:
+            if not self.fail:
+                request = "GET /{} HTTP/1.1\r\nHost:localhost\r\n\r\n".format(route)
+                self.connect(self.host, self.port)
+                self.socket.send(request.encode())
+                return self.httpResponse()
+        except BrokenPipeError:
+            pass
+        return self.fail
     def httpResponse(self):
         response = self.socket.recv(255)
         self.socket.close()
