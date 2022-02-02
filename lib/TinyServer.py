@@ -1,5 +1,5 @@
-from HTTPResponse import *
-from HTTPRequest import *
+from lib import HTTPResponse
+from lib import HTTPRequest
 import socket
 
 class TinyServer:
@@ -13,11 +13,10 @@ class TinyServer:
             self.bindHost("localhost", port)
             while True:
                 (clientsock, address) = self.s.accept()
-                request = HTTPRequest(clientsock.recv(2048))
-                response = HTTPResponse()
+                request = HTTPRequest.HTTPRequest(clientsock.recv(2048))
                 clientsock.send(express.getRoute(request.getPath()))
-            self.s.shutdown(1)
-            self.s.close()
+                clientsock.shutdown(1)
+                clientsock.close()
         except KeyboardInterrupt:
             self.s.shutdown(1)
             self.s.close()

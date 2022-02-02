@@ -1,9 +1,14 @@
-let http = require("http");
+const express = require("express");
+let app = express()
 
-let server = http.createServer((req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.writeHead(200);
-    res.end('{"test": "teste", "te": "t"}');
+app.get("/", (req, res) => {
+    res.send({"message": "welcome home"})
 });
+app.get("/admin", (req, res) => {
+    res.send({"message": "not allowed here"})
+})
+app.get("/infos", (req, res) => {
+    res.send({"message": "informations about us"})
+})
 
-server.listen(3000);
+app.listen(3000);

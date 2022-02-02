@@ -26,5 +26,5 @@ class HTTPFetch:
         self.socket.close()
         return response
 
-request = HTTPFetch("localhost", 3000)
-print(request.get("login"))
+request = HTTPFetch("localhost", 3001)
+print(request.get(""))
