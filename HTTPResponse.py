@@ -1,11 +1,11 @@
 import json
 import datetime
+import sys
 
 class HTTPResponse:
-    def __init__(self, body={}):
-        self.body = json.dumps(body)
-    def end(self):
-        bodyLen = len(self.body)
+    def end(self, body):
+        body = json.dumps(body)
+        bodyLen = len(body)
         return "\r\n".join([
             "HTTP/1.1 200 OK",
             "Content-Type: application/json",
@@ -14,8 +14,8 @@ class HTTPResponse:
             "Keep-Alive: timeout=5",
             "Transfer-Encoding: chunked",
             "",
-            str(bodyLen - 2),
-            self.body,
+            hex(bodyLen).split("x")[1],
+            body,
             "0",
             "",
             "",
